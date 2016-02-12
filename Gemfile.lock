@@ -15,6 +15,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     builder (3.2.2)
+    dotenv (2.1.0)
     i18n (0.7.0)
     json (1.8.3)
     minitest (5.8.4)
@@ -32,4 +33,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   shopify_api
