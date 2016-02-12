@@ -1,11 +1,15 @@
 require 'dotenv'
 require 'shopify_api'
 
-require './shopify_api_extensions.rb'
+require_relative 'shopify_api_extensions.rb'
 
 Dotenv.load
 
 ShopifyAPI::Base.site = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_PASSWORD']}@#{ENV['SHOPIFY_DOMAIN']}/admin"
+
+def reload_setup
+  load "setup.rb"
+end
 
 def fetch_all_products
   page = 1
