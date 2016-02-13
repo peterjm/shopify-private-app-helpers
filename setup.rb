@@ -41,6 +41,15 @@ def variants_matching(products=nil, &block)
   products.map(&:variants).flatten.select(&block)
 end
 
+def print_products(products)
+  products.each{ |p| print_product(p) }
+  nil
+end
+
+def print_product(product)
+  puts "[#{product.id}] #{product.title}"
+end
+
 def print_variants(variants)
   variants.each{ |v| print_variant(v) }
   nil
@@ -54,5 +63,6 @@ def print_variant(variant)
   else
     "#{product.title} - #{variant.title}"
   end
-  puts "[#{product.id}] #{title} ($#{variant.price})"
+  barcode = " - #{v.barcode}" if v.barcode.present?
+  puts "[#{product.id}] #{title} ($#{variant.price})#{barcode}"
 end
