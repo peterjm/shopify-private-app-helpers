@@ -63,6 +63,6 @@ def print_variant(variant)
   else
     "#{product.title} - #{variant.title}"
   end
-  barcode = " - #{v.barcode}" if v.barcode.present?
+  barcode = " - #{variant.barcode}" if variant.barcode.present?
   puts "[#{product.id}] #{title} ($#{variant.price})#{barcode}"
 end
