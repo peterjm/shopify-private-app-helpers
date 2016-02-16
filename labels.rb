@@ -74,5 +74,5 @@ class LabelGenerator
   end
 end
 
-generator = LabelGenerator.new("products.csv", per_inventory: false)
+generator = LabelGenerator.new("products.csv", per_inventory: true)
 generator.generate
