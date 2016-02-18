@@ -8,6 +8,8 @@ Dotenv.load
 
 ShopifyAPI::Base.site = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_PASSWORD']}@#{ENV['SHOPIFY_DOMAIN']}/admin"
 
+DEFAULT_VARIANT_TITLE = "Default Title"
+
 def reload_setup
   load "setup.rb"
 end

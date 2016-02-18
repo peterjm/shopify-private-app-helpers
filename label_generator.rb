@@ -31,7 +31,7 @@ class LabelGenerator
   end
 
   def variant_title(variant)
-    if variant.title == "Default Title"
+    if variant.default?
       ""
     else
       variant.title
