@@ -1,19 +1,19 @@
 require 'csv'
-require_relative 'setup.rb'
 
 class LabelGenerator
-  attr_reader :filename, :per_inventory
+  attr_reader :filename, :products, :per_inventory
 
-  HEADERS = %w(product_title ventor variant_title price)
+  HEADERS = %w(product_title vendor variant_title price barcode)
 
-  def initialize(filename, per_inventory: false)
+  def initialize(filename, products, per_inventory: false)
     @filename = filename
     @per_inventory = per_inventory
+    @products = products
   end
 
   def generate
     CSV.open(filename, "wb") do |csv|
-      csv << ['product_title', 'vendor', 'variant_title', 'price']
+      csv << HEADERS
       products.each do |product|
         write_product(csv, product)
       end
@@ -21,10 +21,6 @@ class LabelGenerator
   end
 
   private
-
-  def products
-    fetch_all_products
-  end
 
   def product_title(product)
     if product.title.start_with?(product.vendor)
@@ -43,7 +39,7 @@ class LabelGenerator
   end
 
   def csv_row(product, variant)
-    [product_title(product), product.vendor, variant_title(variant), variant.price]
+    [product_title(product), product.vendor, variant_title(variant), variant.price, variant.barcode]
   end
 
   def variant_count(product, variant)
@@ -73,6 +69,3 @@ class LabelGenerator
     end
   end
 end
-
-generator = LabelGenerator.new("products.csv", per_inventory: true)
-generator.generate

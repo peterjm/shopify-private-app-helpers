@@ -2,6 +2,7 @@ require 'dotenv'
 require 'shopify_api'
 
 require_relative 'shopify_api_extensions.rb'
+require_relative 'label_generator.rb'
 
 Dotenv.load
 
