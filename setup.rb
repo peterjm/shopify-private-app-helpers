@@ -1,4 +1,5 @@
 require 'dotenv'
+require 'pp'
 require 'shopify_api'
 
 require_relative 'shopify_api_extensions.rb'
@@ -17,19 +18,26 @@ def reload_setup
 end
 
 def fetch_all_products
+  products = fetch_all(ShopifyAPI::Product)
+  products.each{ |p| set_product_on_variants(p) }
+  products
+end
+
+def fetch_all_orders
+  fetch_all(ShopifyAPI::Order, status: "any")
+end
+
+def fetch_all(klass, params={})
   page = 1
   limit = 250
-  products = []
+  resources = []
   loop do
-    batch = ShopifyAPI::Product.find(:all, params: {limit: limit, page: page}).to_a
-    products += batch
+    batch = klass.find(:all, params: params.merge(limit: limit, page: page)).to_a
+    resources += batch
     break if batch.length < limit
     page += 1
   end
-
-  products.each{ |p| set_product_on_variants(p) }
-
-  products
+  resources
 end
 
 def set_product_on_variants(product)
@@ -86,4 +94,9 @@ end
 
 def edit_variants(products, &block)
   edit_products(products) { |p| p.variants.map(&block).any? }
+end
+
+def orders_matching(orders=nil, &block)
+  orders ||= fetch_all_orders
+  orders.select(&block)
 end
