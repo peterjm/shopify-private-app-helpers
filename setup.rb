@@ -68,16 +68,16 @@ def print_variants(variants)
   nil
 end
 
+def variant_title(variant)
+  variant_title = variant.title unless variant.title == "Default Title"
+  [variant.product.title, variant_title].compact.join(" - ")
+end
+
 def print_variant(variant)
   product = variant.product
 
-  title = if variant.title == "Default Title"
-    product.title
-  else
-    "#{product.title} - #{variant.title}"
-  end
   barcode = " - #{variant.barcode}" if variant.barcode.present?
-  puts "[#{product.id}] #{title} ($#{variant.price})#{barcode}"
+  puts "[#{product.id}] #{variant_title(variant)} ($#{variant.price})#{barcode}"
 end
 
 def edit_products(products, &block)
@@ -99,4 +99,10 @@ end
 def orders_matching(orders=nil, &block)
   orders ||= fetch_all_orders
   orders.select(&block)
+end
+
+def orders_since(time)
+  orders_matching do |o|
+    Time.parse(o.created_at) > time
+  end
 end
