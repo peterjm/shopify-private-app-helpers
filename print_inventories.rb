@@ -52,7 +52,7 @@ def print_inventory_file(filename, products)
         variant_title(v),
         v.inventory_quantity,
         quantity_sold_in_2017(v),
-        nil,
+        0,
         nil,
         v.price,
         nil
