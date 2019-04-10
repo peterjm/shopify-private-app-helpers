@@ -1,6 +1,17 @@
 require 'csv'
 require_relative 'setup.rb'
 
+def fetch_year(args)
+  args.detect { |arg| arg =~ /\A--year=(\d{4})\z/ }
+  if $1
+    $1.to_i
+  else
+    puts "Please specify a year, e.g."
+    puts "ruby #{__FILE__} --year=1981"
+    nil
+  end
+end
+
 def beginning_of_year(year)
   Time.parse("#{year}-01-01")
 end
@@ -56,6 +67,7 @@ def print_inventory_file(filename, fiscal_year, products, quantities_sold_by_var
       ]
     end
   end
+  puts "wrote to #{filename}"
 end
 
 def print_inventories(year)
@@ -63,12 +75,13 @@ def print_inventories(year)
   quantities_sold_by_variant_id = fetch_quantities_sold_in_year(year+1)
 
   groceries = all_products.select { |p| %w(grocery).include?(p.product_type&.downcase) }
-  print_inventory_file("grocery_inventory.csv", year, groceries, quantities_sold_by_variant_id)
+  print_inventory_file("inventory_reports/#{year}_grocery_inventory.csv", year, groceries, quantities_sold_by_variant_id)
 
   non_groceries = all_products.select { |p| !%w(grocery workshop).include?(p.product_type&.downcase) }
-  print_inventory_file("non_grocery_inventory.csv", year, non_groceries, quantities_sold_by_variant_id)
+  print_inventory_file("inventory_reports/#{year}_non_grocery_inventory.csv", year, non_groceries, quantities_sold_by_variant_id)
 end
 
 if __FILE__ == $0
-  print_inventories(2017)
+  year = fetch_year(ARGV) or return(1)
+  print_inventories(year)
 end
