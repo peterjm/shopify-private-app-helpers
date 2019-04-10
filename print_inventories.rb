@@ -48,7 +48,7 @@ def print_inventory_file(filename, fiscal_year, products, quantities_sold_by_var
         v.id,
         variant_title(v),
         v.inventory_quantity,
-        quantities_sold_by_variant_id[v],
+        quantities_sold_by_variant_id[v.id],
         0,
         nil,
         v.price,
