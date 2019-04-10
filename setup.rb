@@ -8,6 +8,7 @@ require_relative 'label_generator.rb'
 Dotenv.load
 
 ShopifyAPI::Base.site = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_PASSWORD']}@#{ENV['SHOPIFY_DOMAIN']}/admin"
+ShopifyAPI::Base.api_version = ShopifyAPI::ApiVersion.latest_stable_version
 
 API_CALL_LIMIT = 40
 API_CALLS_PER_SECOND = 2

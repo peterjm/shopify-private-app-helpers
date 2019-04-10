@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
+ruby '2.5.3'
+
 gem 'dotenv'
 gem 'shopify_api'
