@@ -18,9 +18,6 @@ module StoreHelpers
       end
     end
 
-    API_CALL_LIMIT = 40
-    API_CALLS_PER_SECOND = 2
-
     attr_reader :client
 
     PRODUCTS_QUERY = GraphQL.parse(File.read('queries/products_query.graphql'))
@@ -47,7 +44,7 @@ module StoreHelpers
         query: query,
         variables: { id: id },
         desc: 'order',
-        estimated_cost: 500,
+        estimated_cost: 510,
       )
       response.data.order
     end
