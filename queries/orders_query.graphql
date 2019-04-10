@@ -1,0 +1,49 @@
+query($first: Int, $after: String, $query: String) {
+  orders(first: $first, after: $after, query: $query) {
+    edges {
+      node {
+        id
+        createdAt
+        lineItems(first: 5) {
+          edges {
+            node {
+              id
+              variant {
+                id
+              }
+              quantity
+            }
+            cursor
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+        refunds {
+          id
+          refundLineItems(first: 1) {
+            edges {
+              node {
+                lineItem {
+                  variant {
+                    id
+                  }
+                  quantity
+                }
+                restocked
+              }
+              cursor
+            }
+            pageInfo {
+              hasNextPage
+            }
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+    }
+  }
+}

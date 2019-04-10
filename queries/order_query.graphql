@@ -1,0 +1,42 @@
+query($id: ID!) {
+  order(id: $id) {
+    id
+    createdAt
+    lineItems(first: 100) {
+      edges {
+        node {
+          id
+          variant {
+            id
+          }
+          quantity
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+      }
+    }
+    refunds {
+      id
+      refundLineItems(first: 100) {
+        edges {
+          node {
+            lineItem {
+              id
+              variant {
+                id
+              }
+              quantity
+            }
+            restocked
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+        }
+      }
+    }
+  }
+}

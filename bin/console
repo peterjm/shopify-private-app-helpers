@@ -1,0 +1,1 @@
+irb -Ilib -r store_helpers.rb

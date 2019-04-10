@@ -1,0 +1,19 @@
+query($product_id: ID!, $first: Int, $after: String) {
+  product(id: $product_id) {
+    variants(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          title
+          barcode
+          inventoryQuantity
+          price
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+      }
+    }
+  }
+}
