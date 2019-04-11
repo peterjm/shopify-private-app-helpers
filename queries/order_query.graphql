@@ -27,9 +27,9 @@ query($id: ID!) {
               variant {
                 id
               }
-              quantity
             }
             restocked
+            quantity
           }
           cursor
         }

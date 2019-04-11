@@ -36,7 +36,7 @@ module StoreHelpers
     def fetch_quantities_sold_in_year(year)
       orders = orders_since_beginning_of_year(year)
       line_items = orders.map(&:line_items).flatten.select(&:simple_variant_id)
-      restocked_line_items = orders.map(&:refunds).flatten.map(&:refund_line_items).select(&:restock).select(&:simple_variant_id)
+      restocked_line_items = orders.map(&:refunds).flatten.map(&:refund_line_items).flatten.select(&:restocked).select(&:simple_variant_id)
 
       qty = Hash.new(0)
 
@@ -45,7 +45,7 @@ module StoreHelpers
       end
 
       restocked_line_items.each_with_object(qty) do |refund_line_item, qty|
-        qty[refund_line_item.line_item.simple_variant_id] -= refund_line_item.quantity
+        qty[refund_line_item.simple_variant_id] -= refund_line_item.quantity
       end
 
       qty

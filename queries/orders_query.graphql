@@ -28,9 +28,9 @@ query($first: Int, $after: String, $query: String) {
                   variant {
                     id
                   }
-                  quantity
                 }
                 restocked
+                quantity
               }
               cursor
             }

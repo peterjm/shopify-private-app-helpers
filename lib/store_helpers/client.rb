@@ -44,7 +44,7 @@ module StoreHelpers
         query: query,
         variables: { id: id },
         desc: 'order',
-        estimated_cost: 510,
+        estimated_cost: 550,
       )
       response.data.order
     end
@@ -84,24 +84,23 @@ module StoreHelpers
         page = yield(response)
         resources += page.edges.map(&:node)
         requests += 1
-        estimated_cost = parse_throttle(response)
+        estimated_cost = response.extensions["cost"]["requestedQueryCost"]
       end
       resources
     end
 
-    def parse_throttle(response)
-      @last_throttle_status = response.extensions["cost"]["throttleStatus"]
-      response.extensions["cost"]["requestedQueryCost"]
-    end
+    attr_reader :last_throttle_status, :last_throttle_time
 
-    def last_throttle_status
-      @last_throttle_status
+    def store_throttle(response)
+      @last_throttle_status = response.extensions["cost"]["throttleStatus"]
+      @last_throttle_time = Time.now
     end
 
     def make_request(query:, variables:, desc:, count: 1, estimated_cost: 0)
       sleep_to_handle_throttle(estimated_cost)
       puts "making request #{count} for #{desc} (#{variables.inspect})"
       response = GraphQL.query(query, variables: variables)
+      store_throttle(response)
       unless response.data
         puts response.inspect
         raise "need to handle errors"
@@ -115,8 +114,10 @@ module StoreHelpers
 
       currently_available = last_throttle_status["currentlyAvailable"]
       restore_rate = last_throttle_status["restoreRate"]
+      elapsed_time = last_throttle_time ? Time.now - last_throttle_time : 0
 
-      seconds_to_sleep = (requested_cost - currently_available) / restore_rate
+      seconds_to_recover = (requested_cost - currently_available) / restore_rate
+      seconds_to_sleep = seconds_to_recover - elapsed_time
       if seconds_to_sleep > 0
         sleep seconds_to_sleep
       end
