@@ -2,7 +2,6 @@ module StoreHelpers
   module Resources
     class Product < Base
       def variants
-        raise "need to setup variants" unless loaded_nested_resources?
         @variants
       end
 
@@ -25,8 +24,6 @@ module StoreHelpers
             page: __getobj__.variants,
           )
           @variants = raw_variants.map { |v| Variant.new(v, client, self) }
-        else
-          raise "implement querying for variants"
         end
       end
     end

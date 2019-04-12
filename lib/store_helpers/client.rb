@@ -20,10 +20,22 @@ module StoreHelpers
 
     attr_reader :client
 
-    PRODUCTS_QUERY = GraphQL.parse(File.read('queries/products_query.graphql'))
-    PRODUCT_VARIANTS_QUERY = GraphQL.parse(File.read('queries/product_variants_query.graphql'))
-    ORDERS_QUERY = GraphQL.parse(File.read('queries/orders_query.graphql'))
-    ORDER_QUERY = GraphQL.parse(File.read('queries/order_query.graphql'))
+    BASIC_PRODUCTS_QUERY = GraphQL.parse(File.read('graphql/basic_products_query.graphql'))
+    PRODUCTS_QUERY = GraphQL.parse(File.read('graphql/products_query.graphql'))
+    PRODUCT_VARIANTS_QUERY = GraphQL.parse(File.read('graphql/product_variants_query.graphql'))
+    ORDERS_QUERY = GraphQL.parse(File.read('graphql/orders_query.graphql'))
+    ORDER_QUERY = GraphQL.parse(File.read('graphql/order_query.graphql'))
+
+    UPDATE_PRODUCT_TYPE_MUTATION = GraphQL.parse(File.read('graphql/update_product_type_mutation.graphql'))
+
+    def update_product(product, fields:, mutation:)
+      response = make_request(
+        query: mutation,
+        variables: { id: product.id }.merge(fields),
+        desc: 'product update',
+        estimated_cost: 100,
+      )
+    end
 
     def fetch_products(query: PRODUCTS_QUERY)
       raw_products = paginate_products(query: query)

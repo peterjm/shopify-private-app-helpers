@@ -25,9 +25,11 @@ query($first: Int, $after: String, $query: String) {
             edges {
               node {
                 lineItem {
+                  id
                   variant {
                     id
                   }
+                  quantity
                 }
                 restocked
                 quantity

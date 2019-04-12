@@ -1,0 +1,19 @@
+query($first: Int, $after: String) {
+  products(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        title
+        productType
+        vendor
+        hasOnlyDefaultVariant
+        totalVariants
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+    }
+  }
+}
+
